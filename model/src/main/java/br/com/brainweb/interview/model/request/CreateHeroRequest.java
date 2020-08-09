@@ -1,12 +1,12 @@
 package br.com.brainweb.interview.model.request;
 
 import br.com.brainweb.interview.model.enums.Race;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -25,6 +25,7 @@ public class CreateHeroRequest {
     private String name;
 
     @NotNull(message = "message.race.mandatory")
+    @Enumerated(EnumType.STRING)
     private Race race;
 
     @Min(value = 0, message = "message.powerstats.strength.min")

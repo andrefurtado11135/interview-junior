@@ -2,30 +2,19 @@ package br.com.brainweb.interview.core.features.hero;
 
 import br.com.brainweb.interview.model.Hero;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
-@Repository
-@RequiredArgsConstructor
-public class HeroRepository {
+public interface HeroRepository extends JpaRepository<Hero, UUID> {
 
-    private static final String CREATE_HERO_QUERY = "INSERT INTO hero" +
-        " (name, race, power_stats_id)" +
-        " VALUES (:name, :race, :powerStatsId) RETURNING id";
+    @Query("SELECT h FROM Hero h WHERE h.name = :name")
+    Optional<Hero> getHeroByName(@Param("name") String name);
 
-    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-
-    UUID create(Hero hero) {
-        final Map<String, Object> params = Map.of("name", hero.getName(),
-            "race", hero.getRace().name(),
-            "powerStatsId", hero.getPowerStatsId());
-
-        return namedParameterJdbcTemplate.queryForObject(
-            CREATE_HERO_QUERY,
-            params,
-            UUID.class);
-    }
 }

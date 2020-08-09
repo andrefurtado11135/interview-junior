@@ -14,7 +14,7 @@ public class PowerStatsService {
     private final PowerStatsRepository powerStatsRepository;
 
     @Transactional
-    public UUID create(PowerStats powerStats) {
-        return powerStatsRepository.create(powerStats);
+    public PowerStats create(PowerStats powerStats) {
+        return powerStatsRepository.save(powerStats);
     }
 }
